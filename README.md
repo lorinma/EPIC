@@ -1,4 +1,4 @@
-# simcon - simulation of construction workflow
+# EPIC - simulation of emergent production in construction
 This is an open source (LGPL) academic project for agent-based construction workflow simulation.
 It is written in python, all the simulation setup data are pulled from an excel file.
 The simulation process is recorded in a sqlite database, and the result is exported in a csv file.
