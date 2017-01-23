@@ -10,6 +10,7 @@ class Simulation:
         self.work_method_dependency = pd.read_excel(io="epic.xlsx", sheetname="work_method_dependency", header=0)
         self.space = pd.read_excel(io="epic.xlsx", sheetname="space", header=0)
         self.design = pd.read_excel(io="epic.xlsx", sheetname="design", header=0)
+        self.workflow = self.design.rename(columns = {'quantity':'remaining_quantity'})
 
         self.trade.to_sql(name="trade", con=self.engine, if_exists="append", index=False)
         self.work_method.to_sql(name="work_method", con=self.engine, if_exists="append", index=False)
@@ -17,6 +18,8 @@ class Simulation:
                                            index=False)
         self.space.to_sql(name="space", con=self.engine, if_exists="append", index=False)
         self.design.to_sql(name="design", con=self.engine, if_exists="append", index=False)
+
+        self.workflow.to_sql(name="workflow", con=self.engine, if_exists="append", index=False)
 
 
 if __name__ == '__main__':
