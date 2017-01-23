@@ -6,7 +6,7 @@ The simulation process is recorded in a sqlite database, and the result is expor
 ## Dependencies:
 
 ### First:
-$ conda install pandas sqlalchemy requests
+$ conda install sqlalchemy psycopg2 pandas requests
 
 ### Then:
 $ pip install xlrd
