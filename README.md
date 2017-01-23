@@ -6,11 +6,9 @@ The simulation process is recorded in a sqlite database, and the result is expor
 ## Dependencies:
 
 ### First:
-$ conda install sqlalchemy psycopg2 pandas requests
+$ conda install sqlalchemy psycopg2 pandas xlrd requests
 
 ### Then:
-$ pip install xlrd
-
 $ pip install -U https://github.com/RandomOrg/JSON-RPC-Python/zipball/master
 
 ## Run the simulation

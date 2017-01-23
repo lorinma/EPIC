@@ -1,39 +1,39 @@
-DROP TABLE IF EXISTS Trade;
-CREATE TABLE IF NOT EXISTS Trade (
-  Name CHAR(20) PRIMARY KEY NOT NULL UNIQUE
+DROP TABLE IF EXISTS trade CASCADE;
+CREATE TABLE IF NOT EXISTS trade (
+  name CHAR(20) PRIMARY KEY NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS WorkMethod;
-CREATE TABLE IF NOT EXISTS WorkMethod (
-  TradeName CHAR(20) REFERENCES Trade (Name) ON DELETE CASCADE,
-  Method CHAR(50) PRIMARY KEY NOT NULL UNIQUE,
-  Productivity REAL NOT NULL
+DROP TABLE IF EXISTS work_method CASCADE;
+CREATE TABLE IF NOT EXISTS work_method (
+  trade_name CHAR(20) REFERENCES trade (name) ON DELETE CASCADE,
+  method CHAR(50) PRIMARY KEY NOT NULL UNIQUE,
+  productivity REAL NOT NULL
 );
 
-DROP TABLE IF EXISTS WorkMethodDependency;
-CREATE TABLE IF NOT EXISTS WorkMethodDependency (
-  Predecessor CHAR(50) REFERENCES WorkMethod (Method) ON DELETE CASCADE,
-  Successor CHAR(50) REFERENCES WorkMethod (Method) ON DELETE CASCADE,
-  PRIMARY KEY (Predecessor, Successor)
+DROP TABLE IF EXISTS work_method_dependency CASCADE;
+CREATE TABLE IF NOT EXISTS work_method_dependency (
+  predecessor CHAR(50) REFERENCES work_method (method) ON DELETE CASCADE,
+  successor CHAR(50) REFERENCES work_method (method) ON DELETE CASCADE,
+  PRIMARY KEY (predecessor, successor)
 );
 
-DROP TABLE IF EXISTS Space;
-CREATE TABLE IF NOT EXISTS Space (
-  Name CHAR(30) PRIMARY KEY NOT NULL UNIQUE
+DROP TABLE IF EXISTS space CASCADE;
+CREATE TABLE IF NOT EXISTS space (
+  name CHAR(30) PRIMARY KEY NOT NULL UNIQUE
 );
 
-DROP TABLE IF EXISTS Design;
+DROP TABLE IF EXISTS design CASCADE;
 CREATE TABLE IF NOT EXISTS Design (
-  WorkMethod CHAR(50) REFERENCES WorkMethod (Method) ON DELETE CASCADE,
-  Space CHAR(30) REFERENCES Space (Name) ON DELETE CASCADE,
-  Quantity REAL NOT NULL ,
-  PRIMARY KEY (WorkMethod, Space)
+  work_method CHAR(50) REFERENCES work_method (method) ON DELETE CASCADE,
+  space CHAR(30) REFERENCES space (name) ON DELETE CASCADE,
+  quantity REAL NOT NULL ,
+  PRIMARY KEY (work_method, space)
 );
 
-DROP TABLE IF EXISTS Workflow;
+DROP TABLE IF EXISTS workflow CASCADE;
 CREATE TABLE IF NOT EXISTS Workflow (
-  WorkMethod CHAR(50) REFERENCES WorkMethod (Method) ON DELETE CASCADE,
-  Space CHAR(30) REFERENCES Space (Name) ON DELETE CASCADE,
-  Quantity REAL NOT NULL ,
-  PRIMARY KEY (WorkMethod, Space)
+  work_method CHAR(50) REFERENCES work_method (method) ON DELETE CASCADE,
+  space CHAR(30) REFERENCES space (name) ON DELETE CASCADE,
+  quantity REAL NOT NULL ,
+  PRIMARY KEY (work_method, space)
 );
