@@ -1,7 +1,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
-
+from sqlalchemy import func
 class Simulation:
     def __init__(self):
         self.engine = create_engine('postgres://postgres:000000@localhost:5432/epic')
@@ -25,6 +25,14 @@ class Simulation:
         self.workflow.to_sql(name="workflow", con=self.engine, if_exists="append", index=False)
 
         # self.run_sql('epic.process.sql')
+
+        # self.engine.execute(func.run_project())
+        # con = self.engine.connect()
+        # con.execute("SELECT run_project();")
+        # query = text("SELECT run_project();")
+        # self.engine.execute(query)
+        # self.engine.execute('SELECT run_project();')
+        # func.run_project();
 
     def run_sql(self,file_name):
         with open(file_name, 'r') as myfile:

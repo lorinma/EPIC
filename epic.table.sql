@@ -19,22 +19,22 @@ CREATE TABLE IF NOT EXISTS work_method_dependency (
 
 DROP TABLE IF EXISTS space CASCADE;
 CREATE TABLE IF NOT EXISTS space (
-  name CHAR(30) PRIMARY KEY NOT NULL UNIQUE
+  name INTEGER PRIMARY KEY NOT NULL UNIQUE
 );
 
 DROP TABLE IF EXISTS design CASCADE;
 CREATE TABLE IF NOT EXISTS Design (
   work_method CHAR(50) REFERENCES work_method (method) ON DELETE CASCADE,
-  space       CHAR(30) REFERENCES space (name) ON DELETE CASCADE,
+  space       INTEGER REFERENCES space (name) ON DELETE CASCADE,
   quantity    REAL NOT NULL,
   PRIMARY KEY (work_method, space)
 );
 
 DROP TABLE IF EXISTS workflow CASCADE;
 CREATE TABLE IF NOT EXISTS Workflow (
-  id SERIAL PRIMARY KEY,
+  id                 SERIAL PRIMARY KEY,
   work_method        CHAR(50) REFERENCES work_method (method) ON DELETE CASCADE,
-  space              CHAR(30) REFERENCES space (name) ON DELETE CASCADE,
+  space              INTEGER REFERENCES space (name) ON DELETE CASCADE,
   remaining_quantity REAL NOT NULL,
   day                INTEGER DEFAULT 0
 );
