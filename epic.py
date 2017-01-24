@@ -2,6 +2,8 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.sql import text
 from sqlalchemy import func
+
+
 class Simulation:
     def __init__(self):
         self.engine = create_engine('postgres://postgres:000000@localhost:5432/epic')
@@ -34,10 +36,11 @@ class Simulation:
         # self.engine.execute('SELECT run_project();')
         # func.run_project();
 
-    def run_sql(self,file_name):
+    def run_sql(self, file_name):
         with open(file_name, 'r') as myfile:
             data = myfile.read().replace('\n', '')
         self.engine.execute(data)
+
 
 if __name__ == '__main__':
     game = Simulation()

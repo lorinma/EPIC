@@ -116,4 +116,6 @@ CREATE VIEW result AS
   FROM workflow
     LEFT JOIN design ON workflow.work_method = design.work_method AND workflow.space = design.space
     LEFT JOIN work_method ON workflow.work_method = work_method.method
+  WHERE workflow.id > (SELECT count(*)
+                       FROM design)
   ORDER BY work_method.trade_name, workflow.work_method, workflow.day;
