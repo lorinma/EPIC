@@ -51,18 +51,30 @@ CREATE VIEW today AS
 DROP VIEW IF EXISTS mature_work CASCADE;
 CREATE VIEW mature_work AS
   SELECT
-    DISTINCT
-    work_incomplete.work_method,
-    work_incomplete.space,
-    work_incomplete.id,
-    work_method.productivity,
-    work_method.trade_name
-  FROM work_incomplete
-    LEFT JOIN work_method_dependency ON work_incomplete.work_method = work_method_dependency.successor
-    LEFT JOIN work_incomplete predecessor
-      ON work_method_dependency.predecessor = predecessor.work_method AND work_incomplete.space = predecessor.space
-    LEFT JOIN work_method ON work_incomplete.work_method = work_method.method
-  WHERE predecessor.work_method IS NULL;
+    temp2.work_method,
+    temp2.space,
+    temp2.id,
+    work_method.trade_name,
+    work_method.productivity
+  FROM (
+         SELECT
+           *,
+           sum(remaing_quantity)
+           OVER (PARTITION BY work_method, space, id) quantity_new
+         FROM (
+                SELECT
+                  work_incomplete.work_method    work_method,
+                  work_incomplete.space          space,
+                  work_incomplete.id,
+                  predecessor.remaining_quantity remaing_quantity
+                FROM work_incomplete
+                  LEFT JOIN work_method_dependency ON work_incomplete.work_method = work_method_dependency.successor
+                  LEFT JOIN work_incomplete predecessor
+                    ON work_method_dependency.predecessor = predecessor.work_method AND
+                       work_incomplete.space = predecessor.space) temp
+       ) temp2
+    LEFT JOIN work_method ON temp2.work_method = work_method.method
+  WHERE quantity_new IS NULL;
 
 DROP VIEW IF EXISTS chose_work CASCADE;
 CREATE VIEW chose_work AS

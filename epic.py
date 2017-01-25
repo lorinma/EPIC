@@ -7,9 +7,9 @@ from sqlalchemy import func
 class Simulation:
     def __init__(self):
         self.engine = create_engine('postgres://postgres:000000@localhost:5432/epic')
-        self.run_sql('epic.table.sql')
-        self.run_sql('epic.view.sql')
-        self.run_sql('epic.procedure.sql')
+        # self.run_sql('epic.table.sql')
+        # self.run_sql('epic.view.sql')
+        # self.run_sql('epic.procedure.sql')
 
         self.trade = pd.read_excel(io="epic.xlsx", sheetname="trade", header=0)
         self.work_method = pd.read_excel(io="epic.xlsx", sheetname="work_method", header=0)
