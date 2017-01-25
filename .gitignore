@@ -4,3 +4,5 @@ _Store
 .AppleDouble
 .LSOverride
 .idea
+.ipynb_checkpoints/
+.DS_Store
