@@ -1,3 +1,37 @@
+DROP VIEW IF EXISTS latest_productivity CASCADE;
+CREATE VIEW latest_productivity AS
+  SELECT
+    work.trade_name,
+    work.method,
+    work.productivity
+  FROM (
+         SELECT
+           trade_name,
+           method,
+           productivity,
+           id,
+           max(id)
+           OVER (PARTITION BY method) max_id
+         FROM event_productivity_change) work
+  WHERE id = max_id;
+
+DROP VIEW IF EXISTS latest_design CASCADE;
+CREATE VIEW latest_design AS
+  SELECT
+    work.work_method,
+    work.space,
+    work.quantity
+  FROM (
+         SELECT
+           work_method,
+           space,
+           quantity,
+           id,
+           max(id)
+           OVER (PARTITION BY work_method, space) max_id
+         FROM event_design_change) work
+  WHERE id = max_id;
+
 DROP VIEW IF EXISTS work_incomplete CASCADE;
 CREATE VIEW work_incomplete AS
   SELECT
@@ -54,8 +88,8 @@ CREATE VIEW mature_work AS
     temp2.work_method,
     temp2.space,
     temp2.id,
-    work_method.trade_name,
-    work_method.productivity
+    latest_productivity.trade_name,
+    latest_productivity.productivity
   FROM (
          SELECT
            *,
@@ -73,7 +107,7 @@ CREATE VIEW mature_work AS
                     ON work_method_dependency.predecessor = predecessor.work_method AND
                        work_incomplete.space = predecessor.space) temp
        ) temp2
-    LEFT JOIN work_method ON temp2.work_method = work_method.method
+    LEFT JOIN latest_productivity ON temp2.work_method = latest_productivity.method
   WHERE quantity_new IS NULL;
 
 DROP VIEW IF EXISTS chose_work CASCADE;

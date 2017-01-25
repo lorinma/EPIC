@@ -16,7 +16,10 @@ class Simulation:
         self.work_method_dependency = pd.read_excel(io="epic.xlsx", sheetname="work_method_dependency", header=0)
         self.space = pd.read_excel(io="epic.xlsx", sheetname="space", header=0)
         self.design = pd.read_excel(io="epic.xlsx", sheetname="design", header=0)
-        self.workflow = self.design.rename(columns={'quantity': 'remaining_quantity'})
+        self.workflow = self.design.rename(columns={'quantity': 'remaining_quantity'})[
+            ['work_method', 'space', 'remaining_quantity']]
+        self.productivity_change = self.work_method[['trade_name', 'method', 'productivity']]
+        self.design_change = self.design[['work_method', 'space', 'quantity']]
 
         self.trade.to_sql(name="trade", con=self.engine, if_exists="append", index=False)
         self.work_method.to_sql(name="work_method", con=self.engine, if_exists="append", index=False)
@@ -25,6 +28,9 @@ class Simulation:
         self.space.to_sql(name="space", con=self.engine, if_exists="append", index=False)
         self.design.to_sql(name="design", con=self.engine, if_exists="append", index=False)
         self.workflow.to_sql(name="workflow", con=self.engine, if_exists="append", index=False)
+        self.productivity_change.to_sql(name="event_productivity_change", con=self.engine, if_exists="append",
+                                        index=False)
+        self.design_change.to_sql(name="event_design_change", con=self.engine, if_exists="append", index=False)
 
         # self.run_sql('epic.process.sql')
 
