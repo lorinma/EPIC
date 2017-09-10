@@ -6,7 +6,7 @@ from sqlalchemy import func
 
 class Simulation:
     def __init__(self):
-        self.engine = create_engine('postgres://postgres:000000@localhost:5432/epic')
+        self.engine = create_engine('postgres://epic:epic@localhost:5432/epic')
         self.run_sql('epic.table.sql')
         self.run_sql('epic.view.sql')
         self.run_sql('epic.procedure.sql')
